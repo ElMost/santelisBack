@@ -1,9 +1,19 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateBeneficiaireDto } from './create-beneficiaire.dto';
+import { IsNotEmpty, IsString, IsEmail, IsAlphanumeric } from 'class-validator';
 
-export class UpdateBeneficiaireDto extends PartialType(CreateBeneficiaireDto) {
-  nom?: string;
-  prenom?: string;
-  email?: string;
-  password?: string;
+export class UpdateBeneficiaireDto {
+  @IsNotEmpty()
+  @IsString()
+  nom: string;
+
+  @IsNotEmpty()
+  @IsString()
+  prenom: string;
+
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+
+  @IsNotEmpty()
+  @IsAlphanumeric()
+  password: string;
 }
