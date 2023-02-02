@@ -3,8 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 import { BeneficiaireModule } from './beneficiaire/beneficiaire.module';
-import { ReservationDeServicesModule } from './reservation-de-services/reservation-de-services.module';
-import { TypesDeServicesModule } from './types-de-services/types-de-services.module';
+// import { ReservationDeServicesModule } from './reservation-de-services/reservation-de-services.module';
+// import { TypesDeServicesModule } from './types-de-services/types-de-services.module';
 import { DevisModule } from './devis/devis.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -12,9 +12,14 @@ import { join } from 'path';
 import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { Beneficiaire } from './beneficiaire/entities/beneficiaire.entity';
-import { Devis } from './devis/entities/devi.entity';
-import { ReservationDeServices } from './reservation-de-services/entities/reservation-de-service.entity';
-import { TypeDeService } from './types-de-services/entities/types-de-service.entity';
+import { Devis } from './devis/entities/devis.entity';
+import { Reservation } from './reservation/entities/reservation.entity';
+import { ReservationModule } from './reservation/reservation.module';
+import { Service } from './service/entities/service.entity';
+import { ServicesModule } from './service/services.module';
+// import { Devis } from './devis/entities/devi.entity';
+// import { ReservationDeServices } from './reservation-de-services/entities/reservation-de-service.entity';
+// import { TypeDeService } from './types-de-services/entities/types-de-service.entity';
 
 @Module({
   imports: [
@@ -31,12 +36,12 @@ import { TypeDeService } from './types-de-services/entities/types-de-service.ent
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [Beneficiaire, ReservationDeServices, TypeDeService, Devis],
+      entities: [Beneficiaire, Reservation, Service, Devis],
       synchronize: process.env.MODE === 'DEV' ? true : false,
     }),
     BeneficiaireModule,
-    ReservationDeServicesModule,
-    TypesDeServicesModule,
+    ReservationModule,
+    ServicesModule,
     DevisModule,
   ],
   controllers: [AppController],
