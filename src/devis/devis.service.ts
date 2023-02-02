@@ -1,30 +1,3 @@
-// import { Injectable } from '@nestjs/common';
-// import { CreateDevisDto } from './dto/create-devis.dto';
-// import { UpdateDevisDto } from './dto/update-devis.dto';
-
-// @Injectable()
-// export class DevisService {
-//   create(createDevisDto: CreateDevisDto) {
-//     return 'This action adds a new devis';
-//   }
-
-//   findAll() {
-//     return `This action returns all devis`;
-//   }
-
-//   findOne(id: number) {
-//     return `This action returns a #${id} devis`;
-//   }
-
-//   update(id: number, updateDevisDto: UpdateDevisDto) {
-//     return `This action updates a #${id} devis`;
-//   }
-
-//   remove(id: number) {
-//     return `This action removes a #${id} devis`;
-//   }
-// }
-
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

@@ -20,6 +20,7 @@ import { ServicesModule } from './service/services.module';
 // import { Devis } from './devis/entities/devi.entity';
 // import { ReservationDeServices } from './reservation-de-services/entities/reservation-de-service.entity';
 // import { TypeDeService } from './types-de-services/entities/types-de-service.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { ServicesModule } from './service/services.module';
     ReservationModule,
     ServicesModule,
     DevisModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

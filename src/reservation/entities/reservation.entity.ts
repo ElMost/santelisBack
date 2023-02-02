@@ -1,36 +1,3 @@
-// import { Beneficiaire } from 'src/beneficiaire/entities/beneficiaire.entity';
-// import {
-//   Entity,
-//   Column,
-//   PrimaryGeneratedColumn,
-//   ManyToOne,
-//   JoinColumn,
-// } from 'typeorm';
-
-// @Entity()
-// export class Reservation {
-//   @PrimaryGeneratedColumn('uuid')
-//   id: string;
-
-//   @Column()
-//   nomDesServices: string;
-
-//   @Column()
-//   date: Date;
-
-//   @Column()
-//   heure: string;
-
-//   @ManyToOne(() => Beneficiaire, (beneficiaire) => beneficiaire.reservation, {
-//     onDelete: 'CASCADE',
-//     nullable: false,
-//     eager: true,
-//   })
-//   @JoinColumn({ name: 'beneficiaireId' })
-//   beneficiaire: Beneficiaire;
-//   beneficiaireId: string;
-// }
-
 import { Beneficiaire } from 'src/beneficiaire/entities/beneficiaire.entity';
 import {
   Entity,
