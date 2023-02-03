@@ -18,24 +18,45 @@ export class DevisController {
 
   @Get()
   async findAll() {
-    return this.devisService.findAll();
+    try {
+      return await this.devisService.findAll();
+    } catch (error) {
+      throw new HttpException(
+        'Une erreur est survenue lors de la récupération de la liste des devis.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    const devis = await this.devisService.findOne(id);
-    if (!devis) {
+    try {
+      const devis = await this.devisService.findOne(id);
+      if (!devis) {
+        throw new HttpException(
+          "Le devis demandé n'existe pas.",
+          HttpStatus.NOT_FOUND,
+        );
+      }
+      return devis;
+    } catch (error) {
       throw new HttpException(
-        "Le devis demandé n'existe pas.",
-        HttpStatus.NOT_FOUND,
+        'Une erreur est survenue lors de la récupération du devis.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
-    return devis;
   }
 
   @Post()
   async create(@Body() createDevisDto: CreateDevisDto) {
-    return this.devisService.create(createDevisDto);
+    try {
+      return await this.devisService.create(createDevisDto);
+    } catch (error) {
+      throw new HttpException(
+        "Une erreur est survenue lors de la création d'un nouveau devis.",
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Put(':id')
@@ -43,25 +64,39 @@ export class DevisController {
     @Param('id') id: string,
     @Body() updateDevisDto: CreateDevisDto,
   ) {
-    const devis = await this.devisService.findOne(id);
-    if (!devis) {
+    try {
+      const devis = await this.devisService.findOne(id);
+      if (!devis) {
+        throw new HttpException(
+          "Le devis à mettre à jour n'existe pas.",
+          HttpStatus.NOT_FOUND,
+        );
+      }
+      return await this.devisService.update(id, updateDevisDto);
+    } catch (error) {
       throw new HttpException(
-        "Le devis à mettre à jour n'existe pas.",
-        HttpStatus.NOT_FOUND,
+        'Une erreur est survenue lors de la mise à jour du devis.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
-    return this.devisService.update(id, updateDevisDto);
   }
 
   @Delete(':id')
   async delete(@Param('id') id: string) {
-    const devis = await this.devisService.findOne(id);
-    if (!devis) {
+    try {
+      const devis = await this.devisService.findOne(id);
+      if (!devis) {
+        throw new HttpException(
+          "Le devis à supprimer n'existe pas.",
+          HttpStatus.NOT_FOUND,
+        );
+      }
+      return await this.devisService.delete(id);
+    } catch (error) {
       throw new HttpException(
-        "Le devis à supprimer n'existe pas.",
-        HttpStatus.NOT_FOUND,
+        'Une erreur est survenue lors de la suppression du devis.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
-    return this.devisService.delete(id);
   }
 }

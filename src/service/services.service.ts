@@ -1,26 +1,81 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Service } from './entities/service.entity';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
 
 @Injectable()
-export class ServicesService {
-  create(createServiceDto: CreateServiceDto) {
-    return 'This action adds a new Service';
+export class ServiceService {
+  constructor(
+    @InjectRepository(Service)
+    private readonly serviceRepository: Repository<Service>,
+  ) {}
+
+  async create(createServiceDto: CreateServiceDto): Promise<Service> {
+    const service = new Service();
+    service.nomDesServices = createServiceDto.nomDesServices;
+
+    return this.serviceRepository.save(service);
   }
 
-  findAll() {
-    return `This action returns all Services`;
+  async update(
+    id: string,
+    updateServiceDto: UpdateServiceDto,
+  ): Promise<Service> {
+    try {
+      const service = await this.serviceRepository.findOne({ where: { id } });
+      if (!service) {
+        throw new Error(`Service with id '${id}' not found`);
+      }
+
+      service.nomDesServices = updateServiceDto.nomDesServices;
+
+      return this.serviceRepository.save(service);
+    } catch (error) {
+      throw new Error(
+        `Error occured while updating service with id '${id}': ${error.message}`,
+      );
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} Service`;
+  async findById(id: string): Promise<Service> {
+    try {
+      const service = await this.serviceRepository.findOne({ where: { id } });
+      if (!service) {
+        throw new Error(`Service with id '${id}' not found`);
+      }
+
+      return service;
+    } catch (error) {
+      throw new Error(
+        `Error occured while retrieving service with id '${id}': ${error.message}`,
+      );
+    }
   }
 
-  update(id: number, updateServiceDto: UpdateServiceDto) {
-    return `This action updates a #${id} Service`;
+  async findAll(): Promise<Service[]> {
+    try {
+      return await this.serviceRepository.find();
+    } catch (error) {
+      throw new Error(
+        `Error occured while retrieving all services: ${error.message}`,
+      );
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} Service`;
+  async delete(id: string): Promise<void> {
+    try {
+      const service = await this.serviceRepository.findOne({ where: { id } });
+      if (!service) {
+        throw new Error(`Service with id '${id}' not found`);
+      }
+
+      await this.serviceRepository.delete({ id });
+    } catch (error) {
+      throw new Error(
+        `Error occured while deleting service with id '${id}': ${error.message}`,
+      );
+    }
   }
 }

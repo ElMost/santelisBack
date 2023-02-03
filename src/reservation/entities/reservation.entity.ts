@@ -1,4 +1,3 @@
-import { Beneficiaire } from 'src/beneficiaire/entities/beneficiaire.entity';
 import {
   Entity,
   Column,
@@ -7,6 +6,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { IsNotEmpty, IsString, IsDate } from 'class-validator';
+import { User } from 'src/user/entities/user.entity';
 
 @Entity()
 export class Reservation {
@@ -28,14 +28,14 @@ export class Reservation {
   @IsString()
   heure: string;
 
-  @ManyToOne(() => Beneficiaire, (beneficiaire) => beneficiaire.reservation, {
+  @ManyToOne(() => User, (user) => user.reservation, {
     onDelete: 'CASCADE',
     nullable: false,
     eager: true,
   })
-  @JoinColumn({ name: 'beneficiaireId' })
-  beneficiaire: Beneficiaire;
+  @JoinColumn({ name: 'userId' })
+  user: User;
 
   @Column()
-  beneficiaireId: string;
+  userId: string;
 }

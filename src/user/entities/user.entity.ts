@@ -1,10 +1,10 @@
-import { Devis } from 'src/devis/entities/devis.entity';
-import { Reservation } from 'src/reservation/entities/reservation.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { IsNotEmpty, IsString, IsEmail, IsAlphanumeric } from 'class-validator';
+import { Devis } from 'src/devis/entities/devis.entity';
+import { Reservation } from 'src/reservation/entities/reservation.entity';
 
 @Entity()
-export class Beneficiaire {
+export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -28,9 +28,12 @@ export class Beneficiaire {
   @IsAlphanumeric()
   password: string;
 
-  @OneToMany(() => Devis, (devis) => devis.beneficiaire)
+  @Column({ default: 'user' })
+  role: string;
+
+  @OneToMany(() => Devis, (devis) => devis.user)
   devis: Devis[];
 
-  @OneToMany(() => Reservation, (reservation) => reservation.beneficiaire)
+  @OneToMany(() => Reservation, (reservation) => reservation.user)
   reservation: Reservation[];
 }

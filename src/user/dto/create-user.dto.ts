@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString, IsEmail, IsAlphanumeric } from 'class-validator';
 
-export class UpdateBeneficiaireDto {
+export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
   nom: string;
@@ -16,4 +16,6 @@ export class UpdateBeneficiaireDto {
   @IsNotEmpty()
   @IsAlphanumeric()
   password: string;
+
+  role?: 'admin' | 'user';
 }

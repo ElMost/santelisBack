@@ -1,5 +1,5 @@
 import { IsString, IsNotEmpty } from 'class-validator';
-import { Beneficiaire } from 'src/beneficiaire/entities/beneficiaire.entity';
+import { User } from 'src/user/entities/user.entity';
 import {
   Entity,
   Column,
@@ -23,11 +23,11 @@ export class Devis {
   @IsNotEmpty()
   frequence: string;
 
-  @ManyToOne(() => Beneficiaire, (beneficiaire) => beneficiaire.devis, {
+  @ManyToOne(() => User, (user) => user.devis, {
     onDelete: 'CASCADE',
     nullable: false,
     eager: true,
   })
-  @JoinColumn({ name: 'beneficiaireId' })
-  beneficiaire: Beneficiaire;
+  @JoinColumn({ name: 'userId' })
+  user: User;
 }

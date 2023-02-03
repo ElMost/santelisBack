@@ -11,5 +11,5 @@ export class UpdateReservationDto {
   heure: string;
 
   @IsNotEmpty()
-  desciaireId: string;
+  userId: string;
 }

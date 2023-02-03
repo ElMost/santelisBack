@@ -1,42 +1,50 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
-import { ServicesService } from './services.service';
+import { Service } from './entities/service.entity';
+import { ServiceService } from './services.service';
 
-@Controller('services')
-export class ServicesController {
-  constructor(private readonly ServicesService: ServicesService) {}
+@Controller('service')
+export class ServiceController {
+  constructor(private readonly serviceService: ServiceService) {}
 
   @Post()
-  create(@Body() createServiceDto: CreateServiceDto) {
-    return this.ServicesService.create(createServiceDto);
+  @UsePipes(ValidationPipe)
+  async create(@Body() createServiceDto: CreateServiceDto) {
+    return this.serviceService.create(createServiceDto);
   }
 
   @Get()
-  findAll() {
-    return this.ServicesService.findAll();
+  async findAll(): Promise<Service[]> {
+    return this.serviceService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.ServicesService.findOne(+id);
+  async findById(@Param('id') id: string): Promise<Service> {
+    return this.serviceService.findById(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateServiceDto: UpdateServiceDto) {
-    return this.ServicesService.update(+id, updateServiceDto);
+  @Put(':id')
+  @UsePipes(ValidationPipe)
+  async update(
+    @Param('id') id: string,
+    @Body() updateServiceDto: UpdateServiceDto,
+  ) {
+    return this.serviceService.update(id, updateServiceDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.ServicesService.remove(+id);
+  async delete(@Param('id') id: string): Promise<void> {
+    return this.serviceService.delete(id);
   }
 }

@@ -14,5 +14,5 @@ export class CreateReservationDto {
   heure: string;
 
   @IsNotEmpty()
-  beneficiaireId: string;
+  userId: string;
 }

@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { Reservation } from 'src/reservation/entities/reservation.entity';
 import { CreateReservationDto } from 'src/reservation/dto/create-reservation.dto';
 import { ReservationService } from './reservation.service';
@@ -9,21 +18,37 @@ export class ReservationController {
 
   @Get()
   async findAll(): Promise<Reservation[]> {
-    return this.reservationService.findAll();
+    try {
+      return this.reservationService.findAll();
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<Reservation> {
-    return this.reservationService.findOne(id);
+    try {
+      return this.reservationService.findOne(id);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @Post()
   async create(@Body() createReservationDto: CreateReservationDto) {
-    return this.reservationService.create(createReservationDto);
+    try {
+      return this.reservationService.create(createReservationDto);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @Delete(':id')
   async delete(@Param('id') id: string) {
-    return this.reservationService.delete(id);
+    try {
+      return this.reservationService.delete(id);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }

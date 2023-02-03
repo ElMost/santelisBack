@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Reservation } from 'src/reservation/entities/reservation.entity';
@@ -15,29 +15,49 @@ export class ReservationService {
     createReservationDto: CreateReservationDto,
   ): Promise<Reservation> {
     const reservation = this.reservationRepository.create(createReservationDto);
-    return this.reservationRepository.save(reservation);
+    try {
+      return await this.reservationRepository.save(reservation);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   async findAll(): Promise<Reservation[]> {
-    return this.reservationRepository.find();
+    try {
+      return await this.reservationRepository.find();
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   async findOne(id: string): Promise<Reservation> {
-    return this.reservationRepository.findOne({ where: { id } });
+    try {
+      return await this.reservationRepository.findOne({ where: { id } });
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   async update(
     id: string,
     updateReservationDto: CreateReservationDto,
   ): Promise<Reservation> {
-    const reservation = await this.reservationRepository.findOne({
-      where: { id },
-    });
-    this.reservationRepository.merge(reservation, updateReservationDto);
-    return this.reservationRepository.save(reservation);
+    try {
+      const reservation = await this.reservationRepository.findOne({
+        where: { id },
+      });
+      this.reservationRepository.merge(reservation, updateReservationDto);
+      return this.reservationRepository.save(reservation);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   async delete(id: string): Promise<void> {
-    await this.reservationRepository.delete({ id });
+    try {
+      await this.reservationRepository.delete({ id });
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }
